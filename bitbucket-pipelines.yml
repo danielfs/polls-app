@@ -1,0 +1,23 @@
+image: python:3.9
+
+pipelines:
+  default:
+    - step:
+        name: Setup, Lint and Test
+        services:
+          - postgres
+        script:
+          # TODO: Detectar o gerenciar de pacotes do projeto?
+          - pip install poetry
+          - poetry install
+          - poetry run flake8 . --extend-exclude=dist,build,migrations --show-source --statistics
+          - poetry run python manage.py test
+
+definitions:
+  services:
+    postgres:
+      image: postgres
+      variables:
+        POSTGRES_DB: 'mydatabase'
+        POSTGRES_USER: 'mydatabaseuser'
+        POSTGRES_PASSWORD: 'mypassword'
