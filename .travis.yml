@@ -1,0 +1,9 @@
+language: python
+python:
+  - "3.9"
+install:
+  - pip install poetry
+script:
+  - poetry install
+  - poetry run flake8 . --extend-exclude=dist,build,migrations --show-source --statistics
+  - poetry run python manage.py test
