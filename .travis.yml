@@ -1,14 +1,12 @@
 language: python
-env:
-  global:
-  - POSTGRES_PASSWORD=mypassword
-  - POSTGRES_USER=mydatabaseuser
 python:
   - "3.9"
 services:
   - postgresql
 install:
   - pip install poetry
+before_script:
+  - psql -c "CREATE USER mydatabaseuser WITH PASSWORD 'mypassword';" -U postgres
 script:
   - poetry install
   - poetry run flake8 . --extend-exclude=dist,build,migrations --show-source --statistics
