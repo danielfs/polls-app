@@ -1,6 +1,12 @@
 language: python
+env:
+  global:
+  - POSTGRES_PASSWORD=mypassword
+  - POSTGRES_USER=mydatabaseuser
 python:
   - "3.9"
+services:
+  - postgresql
 install:
   - pip install poetry
 script:
