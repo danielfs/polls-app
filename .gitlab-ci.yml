@@ -1,0 +1,31 @@
+image: python:3.9
+
+stages:
+  - test
+
+variables:
+  POSTGRES_DB: "mydatabase"
+  POSTGRES_USER: "mydatabaseuser"
+  POSTGRES_PASSWORD: "mypassword"
+
+services:
+  - name: postgres:11.7
+    alias: localhost
+
+cache:
+  paths:
+    - ~/.cache/pip/
+
+before_script:
+  - pip install poetry
+  - poetry install
+
+unit-test-job:
+  stage: test
+  script:
+    - poetry run python manage.py test
+
+lint-test-job:
+  stage: test
+  script:
+    - poetry run flake8 . --extend-exclude=dist,build,migrations --show-source --statistics
